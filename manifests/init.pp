@@ -252,14 +252,14 @@ class galera(
   }
 
   # Apply temp. fix for mariadb-server-10.1.16, remove for mariadb-server-10.1.17+
-  file { '/tmp/fix_galera_recover_in_10.1.16.patch':
-    content => file('galera/fix_galera_recover_in_10.1.16.patch'),
+  file { '/tmp/mariadb-server_10.1.16_fix_galera_recover.patch':
+    content => file('galera/mariadb-server_10.1.16_fix_galera_recover.patch'),
     before  => Exec['apply-mariadb-server-10.1.16-patch']
   } 
 
   exec { 'apply-mariadb-server-10.1.16-patch': 
-    command  => 'patch -d /usr/bin/ -p0 < /tmp/fix_galera_recover_in_10.1.16.patch',
-    onlyif   => 'patch -d /usr/bin/ -p0 --dry-run < /tmp/fix_galera_recover_in_10.1.16.patch',
+    command  => 'patch -d /usr/bin/ -p0 < /tmp/mariadb-server_10.1.16_fix_galera_recover.patch',
+    onlyif   => 'patch -d /usr/bin/ -p0 --dry-run < /tmp/mariadb-server_10.1.16_fix_galera_recover.patch',
     provider => shell,
     path     => '/usr/bin:/bin:/usr/sbin:/sbin',
     before   => Class['mysql::server::installdb'],
