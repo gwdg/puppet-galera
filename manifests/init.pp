@@ -257,15 +257,6 @@ class galera(
     before  => Exec['apply-mariadb-server-10.1.16-patch']
   } 
 
-  exec { 'apply-mariadb-server-10.1.16-patch': 
-    command  => 'patch -d /usr/bin/ -p0 < /tmp/mariadb-server_10.1.16_fix_galera_recover.patch',
-    onlyif   => 'patch -d /usr/bin/ -p0 --dry-run < /tmp/mariadb-server_10.1.16_fix_galera_recover.patch',
-    provider => shell,
-    path     => '/usr/bin:/bin:/usr/sbin:/sbin',
-    before   => Class['mysql::server::installdb'],
-    require  => Class['mysql::server::install']
-  } 
-
   if $::fqdn == $galera_master {
     # If there are no other servers up and we are the master, the cluster
     # needs to be bootstrapped. This happens before the service is managed
