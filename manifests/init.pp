@@ -251,12 +251,6 @@ class galera(
     require => Class['mysql::server::config']
   }
 
-  # Apply temp. fix for mariadb-server-10.1.16, remove for mariadb-server-10.1.17+
-  file { '/tmp/mariadb-server_10.1.16_fix_galera_recover.patch':
-    content => file('galera/mariadb-server_10.1.16_fix_galera_recover.patch'),
-    before  => Exec['apply-mariadb-server-10.1.16-patch']
-  } 
-
   if $::fqdn == $galera_master {
     # If there are no other servers up and we are the master, the cluster
     # needs to be bootstrapped. This happens before the service is managed
