@@ -13,6 +13,10 @@ class galera::params {
     ) {
       # We have systemd and we should use the binary
       $bootstrap_command = '/usr/bin/galera_new_cluster'
+    } elsif ($::osfamily == 'Debian') 
+    {
+      # For Ubuntu 16.04 and systemd (mariadb / vendor)
+      $bootstrap_command = '/usr/bin/galera_new_cluster'
     } else {
       $bootstrap_command = 'service mysql start --wsrep_cluster_address=gcomm://'
     }
@@ -110,7 +114,7 @@ class galera::params {
     }
     elsif $galera::vendor_type == 'codership' {
 
-      $mysql_package_name_internal = 'mariadb-galera-server'
+      $mysql_package_name_internal = 'mariadb-server'
       $galera_package_name_internal = 'galera-3'
       $client_package_name_internal = 'mariadb-client'
       $libgalera_location = '/usr/lib/galera/libgalera_smm.so'
